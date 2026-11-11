@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aspectos Básicos del Análisis de Datos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff', 100: '#e0effe', 500: '#3b82f6',
+                            600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af',
+                            900: '#1e3a8a', 950: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .flip-card { background-color: transparent; perspective: 1000px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1rem; }
+        .flip-card-back { transform: rotateY(180deg); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-blue-500 selection:text-white">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid me-0 fa-chart-pie text-white text-lg"></i>
+                    </div>
+                    <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-blue-400 bg-clip-text text-transparent">DataAnalytics.edu</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-1 lg:space-x-4 text-sm font-medium text-slate-300">
+                    <a href="#basicos" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800 transition">Conceptos</a>
+                    <a href="#bigdata" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800 transition">Big Data</a>
+                    <a href="#tipos" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800 transition">Tipos de Análisis</a>
+                    <a href="#ciclo" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800 transition">Ciclo de Vida</a>
+                    <a href="#glosario" class="px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800 transition">Glosario</a>
+                    <a href="#quiz" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition shadow-lg shadow-blue-600/30">Quiz</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 text-slate-400 hover:text-white focus:outline-none"><i class="fa-solid fa-bars text-xl"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2 text-sm font-medium">
+            <a href="#basicos" class="block px-3 py-2 rounded-lg hover:bg-slate-800">Conceptos</a>
+            <a href="#bigdata" class="block px-3 py-2 rounded-lg hover:bg-slate-800">Big Data</a>
+            <a href="#tipos" class="block px-3 py-2 rounded-lg hover:bg-slate-800">Tipos de Análisis</a>
+            <a href="#ciclo" class="block px-3 py-2 rounded-lg hover:bg-slate-800">Ciclo de Vida</a>
+            <a href="#glosario" class="block px-3 py-2 rounded-lg hover:bg-slate-800">Glosario</a>
+            <a href="#quiz" class="block px-3 py-2 text-center bg-blue-600 rounded-lg">Realizar Quiz</a>
+        </div>
+    </nav>
+
+    <header class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-30">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-blue-600 rounded-full blur-3xl"></div>
+            <div class="absolute top-60 -left-40 w-96 h-96 bg-indigo-600 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-900/40 border border-blue-500/30 text-blue-300 text-xs sm:text-sm font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> Material Informativo Interactivo
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6 max-w-4xl mx-auto leading-tight">
+                Aspectos Básicos del <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">Análisis de Datos</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-light">
+                Descubre cómo las organizaciones convierten millones de datos desordenados en información valiosa para tomar decisiones fundamentadas y resolver problemas del mundo real.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#basicos" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-blue-500/25 hover:scale-105 transition-all">Iniciar Exploración <i class="fa-solid fa-arrow-down ml-2"></i></a>
+                <a href="#quiz" class="px-8 py-4 bg-slate-800 text-slate-200 font-semibold border border-slate-700 rounded-xl hover:bg-slate-700 hover:text-white transition-all">Evaluar Mi Conocimiento</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 pb-24">
+        <section id="basicos" class="scroll-mt-24">
+            <div class="border-l-4 border-blue-500 pl-4 mb-8">
+                <h2 class="text-3xl font-bold text-white">1. Aspectos Básicos del Análisis de Datos</h2>
+                <p class="text-slate-400 mt-1">Definición, conceptos clave y proceso de transformación de datos.</p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 md:p-8 mb-12 shadow-xl backdrop-blur-sm">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="md:col-span-2 space-y-4">
+                        <h3 class="text-xl font-semibold text-blue-400 flex items-center gap-2"><i class="fa-solid fa-lightbulb"></i> ¿Qué es el análisis de datos?</h3>
+                        <p class="text-slate-300 leading-relaxed">Es el proceso de <strong>recopilar, organizar, limpiar, transformar e interpretar</strong> información con el propósito de obtener conocimientos útiles. Consiste en examinar los datos para identificar relaciones, tendencias, diferencias o comportamientos que ayuden a responder preguntas.</p>
+                        <p class="text-slate-300 leading-relaxed"><strong>Su importancia:</strong> Convierte datos que, por sí solos, pueden parecer desordenados o difíciles de entender, en información que sirve para actuar en empresas, hospitales, centros educativos e instituciones públicas.</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-900/30 to-indigo-900/30 border border-blue-500/20 rounded-xl p-5 text-center">
+                        <div class="text-4xl text-blue-400 mb-2"><i class="fa-solid fa-building-columns"></i></div>
+                        <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-2">Campos de Aplicación</h4>
+                        <div class="flex flex-wrap justify-center gap-2 text-xs">
+                            <span class="bg-slate-800 text-blue-300 px-2.5 py-1 rounded-full border border-slate-700">Empresas</span>
+                            <span class="bg-slate-800 text-blue-300 px-2.5 py-1 rounded-full border border-slate-700">Hospitales</span>
+                            <span class="bg-slate-800 text-blue-300 px-2.5 py-1 rounded-full border border-slate-700">Educación</span>
+                            <span class="bg-slate-800 text-blue-300 px-2.5 py-1 rounded-full border border-slate-700">Ciencia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-cubes text-blue-400"></i> Conceptos Fundamentales <span class="text-xs font-normal text-slate-400">(Pasa el cursor o toca para voltear)</span></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+                <div class="flip-card h-48 cursor-pointer"><div class="flip-card-inner">
+                    <div class="flip-card-front bg-slate-900 border border-slate-800 p-5 flex flex-col items-center justify-center shadow-lg"><div class="w-12 h-12 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-database"></i></div><h4 class="font-bold text-lg text-white">Dato</h4><p class="text-xs text-slate-400 mt-2">Ver definición <i class="fa-solid fa-rotate"></i></p></div>
+                    <div class="flip-card-back bg-gradient-to-br from-blue-900 to-slate-900 border border-blue-500/40 p-4 flex flex-col items-center justify-center text-center"><h4 class="font-bold text-sm text-blue-300 mb-2">Dato</h4><p class="text-xs text-slate-200">Representación de un hecho o característica, como una edad, una fecha, una temperatura o el precio de un producto.</p></div>
+                </div></div>
+                <div class="flip-card h-48 cursor-pointer"><div class="flip-card-inner">
+                    <div class="flip-card-front bg-slate-900 border border-slate-800 p-5 flex flex-col items-center justify-center shadow-lg"><div class="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-diagram-project"></i></div><h4 class="font-bold text-lg text-white">Información</h4><p class="text-xs text-slate-400 mt-2">Ver definición <i class="fa-solid fa-rotate"></i></p></div>
+                    <div class="flip-card-back bg-gradient-to-br from-indigo-900 to-slate-900 border border-indigo-500/40 p-4 flex flex-col items-center justify-center text-center"><h4 class="font-bold text-sm text-indigo-300 mb-2">Información</h4><p class="text-xs text-slate-200">Datos organizados y contextualizados que adquieren significado y propósito práctico.</p></div>
+                </div></div>
+                <div class="flip-card h-48 cursor-pointer"><div class="flip-card-inner">
+                    <div class="flip-card-front bg-slate-900 border border-slate-800 p-5 flex flex-col items-center justify-center shadow-lg"><div class="w-12 h-12 rounded-full bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-brain"></i></div><h4 class="font-bold text-lg text-white">Conocimiento</h4><p class="text-xs text-slate-400 mt-2">Ver definición <i class="fa-solid fa-rotate"></i></p></div>
+                    <div class="flip-card-back bg-gradient-to-br from-purple-900 to-slate-900 border border-purple-500/40 p-4 flex flex-col items-center justify-center text-center"><h4 class="font-bold text-sm text-purple-300 mb-2">Conocimiento</h4><p class="text-xs text-slate-200">Comprensión que se obtiene al interpretar la información y relacionarla con una situación concreta.</p></div>
+                </div></div>
+                <div class="flip-card h-48 cursor-pointer"><div class="flip-card-inner">
+                    <div class="flip-card-front bg-slate-900 border border-slate-800 p-5 flex flex-col items-center justify-center shadow-lg"><div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-sliders"></i></div><h4 class="font-bold text-lg text-white">Variable</h4><p class="text-xs text-slate-400 mt-2">Ver definición <i class="fa-solid fa-rotate"></i></p></div>
+                    <div class="flip-card-back bg-gradient-to-br from-emerald-900 to-slate-900 border border-emerald-500/40 p-4 flex flex-col items-center justify-center text-center"><h4 class="font-bold text-sm text-emerald-300 mb-2">Variable</h4><p class="text-xs text-slate-200">Característica que puede tomar distintos valores, por ejemplo, la edad, el nivel de ventas o una calificación.</p></div>
+                </div></div>
+                <div class="flip-card h-48 cursor-pointer"><div class="flip-card-inner">
+                    <div class="flip-card-front bg-slate-900 border border-slate-800 p-5 flex flex-col items-center justify-center shadow-lg"><div class="w-12 h-12 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-shield-check"></i></div><h4 class="font-bold text-sm sm:text-base text-white text-center">Calidad de Datos</h4><p class="text-xs text-slate-400 mt-2">Ver definición <i class="fa-solid fa-rotate"></i></p></div>
+                    <div class="flip-card-back bg-gradient-to-br from-amber-900 to-slate-900 border border-amber-500/40 p-4 flex flex-col items-center justify-center text-center"><h4 class="font-bold text-xs text-amber-300 mb-1">Calidad de los Datos</h4><p class="text-xs text-slate-200">Grado en que los datos son correctos, completos, consistentes, actuales y adecuados para el objetivo.</p></div>
+                </div></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-7 bg-slate-900/40 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i class="fa-solid fa-list-check text-blue-400"></i> Pasos Generales del Proceso</h3>
+                    <div class="relative border-l-2 border-blue-600/30 ml-4 space-y-6">
+                        <div class="relative pl-6"><div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-slate-900"></div><h4 class="font-semibold text-white text-sm">1. Definir la pregunta o problema</h4><p class="text-xs text-slate-400">Establecer con claridad qué se desea resolver o investigar.</p></div>
+                        <div class="relative pl-6"><div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-slate-900"></div><h4 class="font-semibold text-white text-sm">2. Recopilar datos</h4><p class="text-xs text-slate-400">Obtener información proveniente de fuentes confiables.</p></div>
+                        <div class="relative pl-6"><div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-slate-900"></div><h4 class="font-semibold text-white text-sm">3. Limpiar y organizar</h4><p class="text-xs text-slate-400">Corregir errores, inconsistencias y eliminar datos duplicados.</p></div>
+                        <div class="relative pl-6"><div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-slate-900"></div><h4 class="font-semibold text-white text-sm">4. Analizar la información</h4><p class="text-xs text-slate-400">Aplicar comparaciones, cálculos, estadísticas o herramientas digitales.</p></div>
+                        <div class="relative pl-6"><div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-slate-900"></div><h4 class="font-semibold text-white text-sm">5. Interpretar y comunicar</h4><p class="text-xs text-slate-400">Explicar hallazgos mediante tablas, gráficos o reportes claros.</p></div>
+                        <div class="relative pl-6"><div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-slate-900"></div><h4 class="font-semibold text-white text-sm">6. Tomar decisiones y evaluar</h4><p class="text-xs text-slate-400">Ejecutar acciones basadas en evidencia y comprobar sus resultados.</p></div>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 flex flex-col justify-between">
+                    <div class="bg-gradient-to-br from-slate-900 to-blue-950/40 border border-blue-500/30 rounded-2xl p-6 shadow-lg h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4"><div class="p-3 bg-blue-500/20 text-blue-400 rounded-xl"><i class="fa-solid fa-store text-xl"></i></div><div><span class="text-xs font-semibold uppercase tracking-wider text-blue-400">Caso Práctico</span><h4 class="font-bold text-white text-lg">Ejemplo en una Tienda</h4></div></div>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4 flex-grow">Una tienda de comercio al por menor decide revisar sus registros de ventas de varios meses para identificar cuáles productos tienen mayor rotación, en qué fechas específicas se incrementa la demanda y qué artículos requieren reabastecimiento urgente.</p>
+                        <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-2"><p class="font-semibold text-blue-300 flex items-center gap-1"><i class="fa-solid fa-circle-check text-emerald-400"></i> Impacto Directo:</p><p>Permite organizar mejor las compras con proveedores, optimizar el almacenamiento y evitar pérdidas por exceso o falta de inventario.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bigdata" class="scroll-mt-24">
+            <div class="border-l-4 border-indigo-500 pl-4 mb-8"><h2 class="text-3xl font-bold text-white">2. Definición y Uso de Datos Masivos (Big Data)</h2><p class="text-slate-400 mt-1">Conjuntos masivos de datos que desafían el procesamiento tradicional.</p></div>
+            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 mb-8"><p class="text-slate-300 leading-relaxed"><strong>Big Data</strong> se refiere a conjuntos de datos tan grandes, variados o generados con tanta rapidez que las herramientas tradicionales resultan insuficientes para almacenarlos y analizarlos. Proviene de compras online, redes sociales, dispositivos móviles, sensores y cámaras. No se trata solo de la cantidad de información, sino de contar con la tecnología para extraerle valor real.</p></div>
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i class="fa-solid fa-shapes text-indigo-400"></i> Las 5 V de Big Data</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+                <div class="group bg-slate-900 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 p-5 rounded-xl transition duration-300"><div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-box-archive"></i></div><h4 class="font-bold text-white text-base mb-1">Volumen</h4><p class="text-xs text-slate-400">Gran cantidad masiva de datos que se generan y almacenan constantemente.</p></div>
+                <div class="group bg-slate-900 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 p-5 rounded-xl transition duration-300"><div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-bolt"></i></div><h4 class="font-bold text-white text-base mb-1">Velocidad</h4><p class="text-xs text-slate-400">Rapidez en tiempo real con la que los datos se producen, reciben y procesan.</p></div>
+                <div class="group bg-slate-900 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 p-5 rounded-xl transition duration-300"><div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-photo-film"></i></div><h4 class="font-bold text-white text-base mb-1">Variedad</h4><p class="text-xs text-slate-400">Diversidad de formatos: textos, imágenes, videos, audios y datos de sensores.</p></div>
+                <div class="group bg-slate-900 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 p-5 rounded-xl transition duration-300"><div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-circle-check"></i></div><h4 class="font-bold text-white text-base mb-1">Veracidad</h4><p class="text-xs text-slate-400">Confiabilidad y calidad de los datos; filtrado de errores o información dudosa.</p></div>
+                <div class="group bg-slate-900 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 p-5 rounded-xl transition duration-300"><div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-gem"></i></div><h4 class="font-bold text-white text-base mb-1">Valor</h4><p class="text-xs text-slate-400">Utilidad práctica al transformar datos en conocimiento relevante para decisiones.</p></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div class="lg:col-span-7 space-y-4">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-network-wired text-indigo-400"></i> Usos Principales por Sector</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl"><div class="flex items-center gap-2 text-indigo-400 font-semibold mb-1"><i class="fa-solid fa-cart-shopping"></i> Comercio</div><p class="text-xs text-slate-300">Conocer preferencias de clientes, personalizar recomendaciones y anticipar la demanda.</p></div>
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl"><div class="flex items-center gap-2 text-rose-400 font-semibold mb-1"><i class="fa-solid fa-heart-pulse"></i> Salud</div><p class="text-xs text-slate-300">Estudiar expedientes médicos, apoyar investigaciones y detectar brotes o tendencias epidemiológicas.</p></div>
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl"><div class="flex items-center gap-2 text-amber-400 font-semibold mb-1"><i class="fa-solid fa-route"></i> Transporte</div><p class="text-xs text-slate-300">Monitorear el tráfico vehicular en vivo, optimizar rutas y coordinar la movilidad urbana.</p></div>
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl"><div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1"><i class="fa-solid fa-graduation-cap"></i> Educación</div><p class="text-xs text-slate-300">Identificar dificultades de aprendizaje tempranas y monitorear el rendimiento académico.</p></div>
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl"><div class="flex items-center gap-2 text-cyan-400 font-semibold mb-1"><i class="fa-solid fa-shield-halved"></i> Seguridad Digital</div><p class="text-xs text-slate-300">Detectar comportamientos inusuales en red para prevenir fraudes financieras o ciberataques.</p></div>
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl"><div class="flex items-center gap-2 text-teal-400 font-semibold mb-1"><i class="fa-solid fa-leaf"></i> Medio Ambiente</div><p class="text-xs text-slate-300">Analizar patrones climáticos, medir contaminación y planificar recursos naturales.</p></div>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-gradient-to-br from-indigo-950/50 to-slate-900 border border-indigo-500/30 rounded-2xl p-6"><div class="flex items-center gap-3 mb-3"><div class="p-2.5 bg-indigo-500/20 text-indigo-400 rounded-lg"><i class="fa-solid fa-taxi text-lg"></i></div><h4 class="font-bold text-white text-base">Ejemplo: App de Transporte</h4></div><p class="text-xs text-slate-300 leading-relaxed">Una plataforma de viajes analiza en tiempo real millones de recorridos, horarios, condiciones del clima y ubicaciones GPS para estimar la duración del viaje, identificar zonas de alta demanda y recalcular rutas óptimas.</p></div>
+                    <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6"><div class="flex items-center gap-2 text-amber-400 font-bold mb-3"><i class="fa-solid fa-triangle-exclamation"></i> Retos y Consideraciones</div><ul class="text-xs text-slate-300 space-y-2 list-disc list-inside"><li>Proteger la privacidad de los usuarios y limitar accesos no autorizados.</li><li>Mantener estrictas medidas de ciberseguridad.</li><li>Evitar sesgos o conclusiones injustas causadas por datos distorsionados.</li><li class="font-medium text-amber-300">¡Tener muchos datos no garantiza por sí solo decisiones correctas!</li></ul></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tipos" class="scroll-mt-24">
+            <div class="border-l-4 border-purple-500 pl-4 mb-8"><h2 class="text-3xl font-bold text-white">3. Tipos de Análisis de Datos</h2><p class="text-slate-400 mt-1">Los 4 enfoques orientados a responder preguntas específicas.</p></div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 mb-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+                    <button onclick="selectType('desc')" id="btn-desc" class="type-tab-btn px-4 py-3 rounded-xl font-semibold text-sm transition bg-purple-600 text-white shadow-lg">Descriptivo</button>
+                    <button onclick="selectType('diag')" id="btn-diag" class="type-tab-btn px-4 py-3 rounded-xl font-semibold text-sm transition bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white">Diagnóstico</button>
+                    <button onclick="selectType('pred')" id="btn-pred" class="type-tab-btn px-4 py-3 rounded-xl font-semibold text-sm transition bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white">Predictivo</button>
+                    <button onclick="selectType('pres')" id="btn-pres" class="type-tab-btn px-4 py-3 rounded-xl font-semibold text-sm transition bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white">Prescriptivo</button>
+                </div>
+                <div id="type-display" class="bg-slate-950 p-6 rounded-xl border border-slate-800"></div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-table text-purple-400"></i> Comparación Rápida</h3>
+            <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-900 text-slate-200 uppercase text-xs"><tr><th class="px-6 py-4">Tipo</th><th class="px-6 py-4">Pregunta Principal</th><th class="px-6 py-4">Ejemplo Práctico</th></tr></thead>
+                    <tbody class="divide-y divide-slate-800 bg-slate-950/60">
+                        <tr class="hover:bg-slate-900/50"><td class="px-6 py-4 font-bold text-purple-400">Descriptivo</td><td class="px-6 py-4 text-white">¿Qué ocurrió?</td><td class="px-6 py-4 text-slate-400">Ventas totales registradas el mes pasado.</td></tr>
+                        <tr class="hover:bg-slate-900/50"><td class="px-6 py-4 font-bold text-blue-400">Diagnóstico</td><td class="px-6 py-4 text-white">¿Por qué ocurrió?</td><td class="px-6 py-4 text-slate-400">Identificar las causas de una caída puntual en las ventas.</td></tr>
+                        <tr class="hover:bg-slate-900/50"><td class="px-6 py-4 font-bold text-emerald-400">Predictivo</td><td class="px-6 py-4 text-white">¿Qué podría ocurrir?</td><td class="px-6 py-4 text-slate-400">Pronóstico del número de productos que se venderán el próximo mes.</td></tr>
+                        <tr class="hover:bg-slate-900/50"><td class="px-6 py-4 font-bold text-amber-400">Prescriptivo</td><td class="px-6 py-4 text-white">¿Qué conviene hacer?</td><td class="px-6 py-4 text-slate-400">Recomendación exacta sobre cuánto inventario comprar.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="ciclo" class="scroll-mt-24">
+            <div class="border-l-4 border-emerald-500 pl-4 mb-8"><h2 class="text-3xl font-bold text-white">4. Ciclo de Vida del Análisis de Datos</h2><p class="text-slate-400 mt-1">Secuencia iterativa para trabajar la información de forma ordenada.</p></div>
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 mb-12">
+                <h3 class="text-lg font-bold text-white mb-6 text-center">Haz clic en cada etapa para ver los detalles:</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
+                    <button onclick="showStep(1)" id="step-btn-1" class="step-btn p-3 rounded-xl border border-emerald-500/50 bg-emerald-950/40 text-emerald-300 text-center font-medium text-xs"><span class="block text-lg font-bold mb-1">1</span> Definición</button>
+                    <button onclick="showStep(2)" id="step-btn-2" class="step-btn p-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-center font-medium text-xs"><span class="block text-lg font-bold mb-1">2</span> Recopilación</button>
+                    <button onclick="showStep(3)" id="step-btn-3" class="step-btn p-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-center font-medium text-xs"><span class="block text-lg font-bold mb-1">3</span> Limpieza</button>
+                    <button onclick="showStep(4)" id="step-btn-4" class="step-btn p-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-center font-medium text-xs"><span class="block text-lg font-bold mb-1">4</span> Exploración</button>
+                    <button onclick="showStep(5)" id="step-btn-5" class="step-btn p-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-center font-medium text-xs"><span class="block text-lg font-bold mb-1">5</span> Interpretación</button>
+                    <button onclick="showStep(6)" id="step-btn-6" class="step-btn p-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-center font-medium text-xs"><span class="block text-lg font-bold mb-1">6</span> Decisiones</button>
+                </div>
+                <div id="step-details" class="bg-slate-950 border border-slate-800 rounded-xl p-6 min-h-[140px] flex items-center justify-center text-center"></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                <div class="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4"><div class="p-3 bg-emerald-500/20 text-emerald-400 rounded-xl"><i class="fa-solid fa-school text-xl"></i></div><div><span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Ejemplo Integrado</span><h4 class="font-bold text-white text-lg">Institución Educativa</h4></div></div>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">Una escuela busca reducir el ausentismo escolar. Sigue las 6 etapas del ciclo:</p>
+                    <ol class="text-xs text-slate-400 space-y-2 list-decimal list-inside">
+                        <li><strong class="text-slate-200">Definición:</strong> Establece el objetivo de mejorar la asistencia estudiantil.</li>
+                        <li><strong class="text-slate-200">Recopilación:</strong> Reúne registros digitales de asistencia diarios.</li>
+                        <li><strong class="text-slate-200">Limpieza:</strong> Revisa que no existan inconsistencias o ausencias sin registrar.</li>
+                        <li><strong class="text-slate-200">Exploración:</strong> Identifica que los viernes y ciertos cursos tienen mayor ausentismo.</li>
+                        <li><strong class="text-slate-200">Interpretación:</strong> Prepara un informe visual para directivos y profesores.</li>
+                        <li><strong class="text-slate-200">Evaluación:</strong> Aplica tutorías y monitorea si la asistencia mejora.</li>
+                    </ol>
+                </div>
+                <div class="lg:col-span-6 space-y-4">
+                    <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench text-emerald-400"></i> Herramientas Habituales</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3"><i class="fa-solid fa-file-excel text-emerald-400 text-2xl"></i><div><h5 class="font-bold text-white text-sm">Hojas de Cálculo</h5><p class="text-[11px] text-slate-400">Excel, Google Sheets</p></div></div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3"><i class="fa-solid fa-server text-blue-400 text-2xl"></i><div><h5 class="font-bold text-white text-sm">Bases de Datos</h5><p class="text-[11px] text-slate-400">SQL Server, PostgreSQL</p></div></div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3"><i class="fa-brands fa-python text-amber-400 text-2xl"></i><div><h5 class="font-bold text-white text-sm">Programación</h5><p class="text-[11px] text-slate-400">Python, R</p></div></div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center gap-3"><i class="fa-solid fa-chart-column text-purple-400 text-2xl"></i><div><h5 class="font-bold text-white text-sm">Visualización</h5><p class="text-[11px] text-slate-400">Power BI, Tableau</p></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="glosario" class="scroll-mt-24">
+            <div class="border-l-4 border-cyan-500 pl-4 mb-8"><h2 class="text-3xl font-bold text-white">5. Glosario de Términos</h2><p class="text-slate-400 mt-1">Busca cualquier concepto del análisis de datos en tiempo real.</p></div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <div class="relative mb-6"><i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i><input type="text" id="glossary-search" oninput="filterGlossary()" placeholder="Filtrar términos (ej. Big Data, Patrón...)" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition"></div>
+                <div id="glossary-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="glossary-item bg-slate-950 p-4 rounded-xl border border-slate-800/80"><h4 class="font-bold text-cyan-400 text-base mb-1">Big Data</h4><p class="text-xs text-slate-300">Datos de gran volumen, velocidad o variedad que requieren métodos y tecnologías especializadas para su análisis.</p></div>
+                    <div class="glossary-item bg-slate-950 p-4 rounded-xl border border-slate-800/80"><h4 class="font-bold text-cyan-400 text-base mb-1">Base de datos</h4><p class="text-xs text-slate-300">Conjunto organizado de información almacenada digitalmente de forma que pueda consultarse y actualizarse con facilidad.</p></div>
+                    <div class="glossary-item bg-slate-950 p-4 rounded-xl border border-slate-800/80"><h4 class="font-bold text-cyan-400 text-base mb-1">Patrón</h4><p class="text-xs text-slate-300">Comportamiento, tendencia o relación que se repite de forma consistente dentro de los datos.</p></div>
+                    <div class="glossary-item bg-slate-950 p-4 rounded-xl border border-slate-800/80"><h4 class="font-bold text-cyan-400 text-base mb-1">Modelo</h4><p class="text-xs text-slate-300">Representación o método matemático que permite describir, explicar o estimar un fenómeno a partir de datos.</p></div>
+                    <div class="glossary-item bg-slate-950 p-4 rounded-xl border border-slate-800/80 md:col-span-2"><h4 class="font-bold text-cyan-400 text-base mb-1">Visualización de datos</h4><p class="text-xs text-slate-300">Representación gráfica de información mediante gráficos, diagramas, mapas o paneles interactivos para facilitar su comprensión.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="scroll-mt-24">
+            <div class="border-l-4 border-amber-500 pl-4 mb-8"><h2 class="text-3xl font-bold text-white">Quiz de Autoevaluación</h2><p class="text-slate-400 mt-1">Pon a prueba lo que has aprendido en 3 sencillas preguntas.</p></div>
+            <div class="bg-gradient-to-br from-slate-900 to-amber-950/20 border border-amber-500/30 rounded-2xl p-6 md:p-8">
+                <form id="quiz-form" class="space-y-6">
+                    <div class="space-y-3"><h4 class="font-bold text-white text-base">1. ¿Qué tipo de análisis responde a la pregunta "¿Qué podría ocurrir?" en el futuro?</h4><div class="space-y-2 text-xs text-slate-300">
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q1" value="a"> A) Análisis Descriptivo</label>
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q1" value="b"> B) Análisis Predictivo</label>
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q1" value="c"> C) Análisis Diagnóstico</label>
+                    </div></div>
+                    <div class="space-y-3"><h4 class="font-bold text-white text-base">2. ¿Cuáles son las 5 V que caracterizan al Big Data?</h4><div class="space-y-2 text-xs text-slate-300">
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q2" value="a"> A) Volumen, Velocidad, Variedad, Veracidad y Valor.</label>
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q2" value="b"> B) Ventas, Visión, Variables, Virtualidad y Venta.</label>
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q2" value="c"> C) Volumen, Vector, Variables, Validez y Valor.</label>
+                    </div></div>
+                    <div class="space-y-3"><h4 class="font-bold text-white text-base">3. ¿Cuál es la primera etapa del Ciclo de Vida del análisis de datos?</h4><div class="space-y-2 text-xs text-slate-300">
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q3" value="a"> A) Limpieza y preparación de la información.</label>
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q3" value="b"> B) Recopilación masiva de registros.</label>
+                        <label class="flex items-center gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 cursor-pointer hover:border-amber-500/50"><input type="radio" name="q3" value="c"> C) Definición del problema u objetivo.</label>
+                    </div></div>
+                    <button type="button" onclick="evaluateQuiz()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold rounded-xl hover:from-amber-400 hover:to-amber-500 transition shadow-lg shadow-amber-500/20">Enviar Respuestas</button>
+                </form>
+                <div id="quiz-result" class="hidden mt-6 p-4 rounded-xl border text-center font-medium text-sm"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500"><div class="max-w-7xl mx-auto px-4"><p>© Material informativo interactivo sobre Aspectos Básicos del Análisis de Datos.</p><p class="mt-2 text-slate-600">Diseñado para entornos educativos y de aprendizaje continuo.</p></div></footer>
+
+    <script>
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        const typeData = {
+            desc: { title: "Análisis Descriptivo: ¿Qué ocurrió?", color: "text-purple-400", desc: "Resume los datos históricos para mostrar qué ha pasado. Utiliza totales, promedios, porcentajes, tablas y gráficos explicativos.", example: "Ejemplo: Calcular cuántos productos vendió una tienda durante el último mes." },
+            diag: { title: "Análisis Diagnóstico: ¿Por qué ocurrió?", color: "text-blue-400", desc: "Busca las causas o factores que explican un resultado. Compara datos y examina relaciones causales para comprender los eventos.", example: "Ejemplo: Investigar por qué disminuyeron las ventas y descubrir que hubo menos clientes durante cierto periodo." },
+            pred: { title: "Análisis Predictivo: ¿Qué podría ocurrir?", color: "text-emerald-400", desc: "Utiliza datos anteriores, patrones históricos y modelos estadísticos o de aprendizaje automático para estimar resultados futuros. Son estimaciones, no certezas.", example: "Ejemplo: Pronosticar cuántos productos podrían venderse el próximo mes." },
+            pres: { title: "Análisis Prescriptivo: ¿Qué conviene hacer?", color: "text-amber-400", desc: "Compara posibles decisiones y recomienda acciones específicas que ayudan a alcanzar un objetivo considerando restricciones y costos.", example: "Ejemplo: Sugerir exactamente cuánto inventario comprar para responder a la demanda esperada sin acumular stock." }
+        };
+
+        function selectType(typeKey) {
+            document.querySelectorAll('.type-tab-btn').forEach(btn => {
+                btn.className = 'type-tab-btn px-4 py-3 rounded-xl font-semibold text-sm transition bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white';
+            });
+            document.getElementById(`btn-${typeKey}`).className = 'type-tab-btn px-4 py-3 rounded-xl font-semibold text-sm transition bg-purple-600 text-white shadow-lg';
+            const data = typeData[typeKey];
+            document.getElementById('type-display').innerHTML = `
+                <h4 class="text-lg font-bold ${data.color} mb-2">${data.title}</h4>
+                <p class="text-sm text-slate-300 mb-4 leading-relaxed">${data.desc}</p>
+                <div class="bg-slate-900 border border-slate-800 p-3 rounded-lg text-xs text-slate-300 font-medium">${data.example}</div>`;
+        }
+        selectType('desc');
+
+        const stepData = {
+            1: { title: "1. Definición del problema u objetivo", desc: "Establecer con claridad qué se quiere conocer, qué decisión se necesita apoyar y cuáles preguntas específicas debe responder el análisis." },
+            2: { title: "2. Recopilación de datos", desc: "Obtener la información necesaria desde fuentes confiables como encuestas, bases de datos, registros transaccionales, sensores o plataformas digitales." },
+            3: { title: "3. Limpieza y preparación", desc: "Revisar la información, corregir errores, tratar valores faltantes, eliminar registros duplicados y estructurar los datos para el procesamiento." },
+            4: { title: "4. Exploración y análisis", desc: "Aplicar métodos estadísticos, comparaciones, filtros y herramientas analíticas para identificar patrones, tendencias y relaciones ocultas." },
+            5: { title: "5. Interpretación y comunicación", desc: "Explicar qué significan los hallazgos y presentarlos de forma clara y accesible mediante informes, tablas, gráficos o paneles visuales." },
+            6: { title: "6. Toma de decisiones y evaluación", desc: "Utilizar las conclusiones para actuar y luego comprobar si las decisiones cumplieron con el objetivo inicial. Esto puede iniciar un nuevo ciclo." }
+        };
+
+        function showStep(stepNum) {
+            for (let i = 1; i <= 6; i++) {
+                const btn = document.getElementById(`step-btn-${i}`);
+                btn.className = i === stepNum
+                    ? "step-btn p-3 rounded-xl border border-emerald-500/50 bg-emerald-950/40 text-emerald-300 text-center font-medium text-xs hover:border-emerald-500 transition"
+                    : "step-btn p-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 text-center font-medium text-xs hover:border-slate-700 transition";
+            }
+            const details = stepData[stepNum];
+            document.getElementById('step-details').innerHTML = `<div><h4 class="font-bold text-emerald-400 text-base mb-2">${details.title}</h4><p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">${details.desc}</p></div>`;
+        }
+        showStep(1);
+
+        function filterGlossary() {
+            const query = document.getElementById('glossary-search').value.toLowerCase();
+            document.querySelectorAll('.glossary-item').forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function evaluateQuiz() {
+            const form = document.getElementById('quiz-form');
+            const q1 = form.q1.value, q2 = form.q2.value, q3 = form.q3.value;
+            const resultDiv = document.getElementById('quiz-result');
+            if (!q1 || !q2 || !q3) {
+                resultDiv.classList.remove('hidden', 'bg-emerald-900/30', 'border-emerald-500', 'text-emerald-300');
+                resultDiv.classList.add('bg-amber-900/30', 'border-amber-500', 'text-amber-300');
+                resultDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i> Por favor responde a todas las preguntas antes de enviar.';
+                return;
+            }
+            let score = 0;
+            if (q1 === 'b') score++;
+            if (q2 === 'a') score++;
+            if (q3 === 'c') score++;
+            resultDiv.classList.remove('hidden', 'bg-amber-900/30', 'border-amber-500', 'text-amber-300');
+            resultDiv.classList.add('bg-emerald-900/40', 'border-emerald-500/50', 'text-emerald-300');
+            if (score === 3) {
+                resultDiv.innerHTML = `<i class="fa-solid fa-trophy text-amber-400 text-lg mr-2"></i> ¡Excelente! Has acertado ${score}/3 preguntas. Tienes claros los conceptos del análisis de datos.`;
+            } else {
+                resultDiv.innerHTML = `<i class="fa-solid fa-circle-info mr-2"></i> Obtuviste ${score}/3 respuestas correctas. Revisa las secciones correspondientes para reforzar tus conocimientos.`;
+            }
+        }
+    </script>
+</body>
+</html>
